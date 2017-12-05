@@ -2,38 +2,38 @@ require "gameObject"
 require "propulseur"
 
 function love.load()
-	love.window.setMode(800, 600)
+	love.window.setMode(1200, 768)
 	pepperFlips = 0
 	angle = 0
 	objects = {}
 	boundaries = {}
 
 	love.physics.setMeter(64)
-	love.graphics.setBackgroundColor(17, 140, 208)
+	background = love.graphics.newImage("Sprites/bg.png")
 	world = love.physics.newWorld(0, 9.81*64, true)
 	
 	ground = {}
-	ground.body = love.physics.newBody(world, 800/2, 600-50/2)
-	ground.shape = love.physics.newRectangleShape(0, 0, 800, 50)
+	ground.body = love.physics.newBody(world, 1200/2, 768-50/2)
+	ground.shape = love.physics.newRectangleShape(0, 0, 1200, 50)
 	ground.fixture = love.physics.newFixture(ground.body, ground.shape)
 	
 	boundaries.left = {}
-	boundaries.left.body = love.physics.newBody(world, 0, 300)
-	boundaries.left.shape = love.physics.newRectangleShape(0, 0, 0, 600)
+	boundaries.left.body = love.physics.newBody(world, 0, 384)
+	boundaries.left.shape = love.physics.newRectangleShape(0, 0, 0, 768)
 	boundaries.left.fixture = love.physics.newFixture(boundaries.left.body, boundaries.left.shape)
 	
 	boundaries.right = {}
-	boundaries.right.body = love.physics.newBody(world, 800, 300)
-	boundaries.right.shape = love.physics.newRectangleShape(0, 0, 0, 600)
+	boundaries.right.body = love.physics.newBody(world, 1200, 384)
+	boundaries.right.shape = love.physics.newRectangleShape(0, 0, 0, 768)
 	boundaries.right.fixture = love.physics.newFixture(boundaries.right.body, boundaries.right.shape)
 	
 	boundaries.top = {}
-	boundaries.top.body = love.physics.newBody(world, 400, 0)
-	boundaries.top.shape = love.physics.newRectangleShape(0, 0, 800, 0)
+	boundaries.top.body = love.physics.newBody(world, 600, 0)
+	boundaries.top.shape = love.physics.newRectangleShape(0, 0, 1200, 0)
 	boundaries.top.fixture = love.physics.newFixture(boundaries.top.body, boundaries.top.shape)
 
-	player = GameObject:new("Sprites/DrPepper.png", world, 800/2, 50, 1, 1, "dynamic", 0)
-	propulseur = Propulseur.create(50, 265)
+	player = GameObject:new("Sprites/DrPepper.png", world, 1200/2, 700, 1, 1, "dynamic", 0)
+	propulseur = Propulseur.create(50, 350)
 	
 	objects.block = {}
 	objects.block.body = love.physics.newBody(world, 200, 50, "dynamic", 5)
@@ -73,7 +73,10 @@ function love.update(dt)
 end
 
 function love.draw()
-	love.graphics.setColor(79, 196, 86)
+	love.graphics.reset()
+	love.graphics.draw(background, 0, 0, 0, 1200/background:getWidth(), 768/background:getHeight())
+	
+	love.graphics.setColor(90, 145, 51)
 	love.graphics.polygon(
 		"fill",
 		ground.body:getWorldPoints(ground.shape:getPoints())
@@ -88,9 +91,13 @@ function love.draw()
 		objects.block.body:getWorldPoints(objects.block.shape:getPoints())
 	)
 	
-	love.graphics.setColor(255, 239, 0)
-	love.graphics.print("Pepper Flips : " .. pepperFlips, 10, 10)
+	love.graphics.setColor(0, 0, 255)
+	love.graphics.polygon(
+		"fill", 
+		boundaries.top.body:getWorldPoints(boundaries.top.shape:getPoints())
+	)
 	
-	love.graphics.setBackgroundColor(43, 134, 203)
+	love.graphics.setColor(255, 0, 0)
+	love.graphics.print("Pepper Flips : " .. pepperFlips, 10, 10)
 	propulseur:draw()
 end
