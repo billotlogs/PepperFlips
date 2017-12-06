@@ -33,7 +33,7 @@ function love.load()
 	boundaries.top.fixture = love.physics.newFixture(boundaries.top.body, boundaries.top.shape)
 
 	player = GameObject:new("Sprites/DrPepper.png", world, 1200/2, 700, 1, 1, "dynamic", 0)
-	propulseur = Propulseur.create(50, 350)
+	propulseur = Propulseur.create(50, 350, 0)
 	
 	objects.block = {}
 	objects.block.body = love.physics.newBody(world, 200, 50, "dynamic", 5)
